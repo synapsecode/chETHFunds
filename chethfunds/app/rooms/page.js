@@ -6,6 +6,7 @@ import { ViemUtils } from "@/blockchain/viem";
 import { parseEther } from 'viem'
 const chitFundABI = require('@/blockchain/contract/ChitFund.json');
 import bytecode from '@/blockchain/contract/bytecode';
+import RoomComponent from "@/components/RoomComponent";
 
 // import App from "next/app";
 
@@ -41,7 +42,7 @@ export default function RoomHome() {
         const newRoomId = `fund${nid}`;
         window.localStorage.setItem(newRoomId, contract.contractAddress);
         console.log(`Mapped Address: ${newRoomId} => ${window.localStorage.getItem(newRoomId)}`);
-        info(`Your RoomID`)
+        window.location.href = `/rooms/${newRoomId}`
     }
 
     if (loading) {
@@ -59,45 +60,59 @@ export default function RoomHome() {
             <br /><br /><br /><br /><br />
 
             <center>
-                <div className="border-2 border-white rounded-lg max-w-max p-5 m-2 ml-8 text-black">
-                    Create New Room: <br /><br />
+                <div className="flex space-x-8 content-end justify-center">
 
-                    <input type="number" placeholder="Enter no of members" className="m-1 px-4 py-2 rounded "
-                        value={memberCount}
-                        onChange={(x) => setMemberCount(x.target.value)}
-                    /> <br />
-                    <input type="number" placeholder="Enter no of months" className="m-1 px-4 py-2 rounded"
-                        value={monthCount}
-                        onChange={(x) => setMonthCount(x.target.value)} /> <br></br>
-                    <input type="number" placeholder="Enter the chit amount" className="m-1 px-4 py-2 rounded"
-                        value={chitAmount}
-                        onChange={(x) => setChitAmount(x.target.value)}
-                    /> <br />
-                    <input type="button" value="Create Room" className="border-2 border-white max-w-max px-5 py-2 mt-4 text-white rounded hover:bg-purple-500"
-                        onClick={createRoom}
-                    />
+                    <div>
+
+                        <div className="border-2 border-white rounded-lg max-w-max p-5 m-2 ml-8 text-black">
+                            <p className="text-white">Create New Room:</p>  <br />
+
+                            <input type="number" placeholder="Enter no of members" className="m-1 px-4 py-2 rounded "
+                                value={memberCount}
+                                onChange={(x) => setMemberCount(x.target.value)}
+                            /> <br />
+                            <input type="number" placeholder="Enter no of months" className="m-1 px-4 py-2 rounded"
+                                value={monthCount}
+                                onChange={(x) => setMonthCount(x.target.value)} /> <br></br>
+                            <input type="number" placeholder="Enter the chit amount" className="m-1 px-4 py-2 rounded"
+                                value={chitAmount}
+                                onChange={(x) => setChitAmount(x.target.value)}
+                            /> <br />
+                            <input type="button" value="Create Room" className="border-2 border-white max-w-max px-5 py-2 mt-4 text-white rounded hover:bg-purple-500"
+                                onClick={createRoom}
+                            />
+
+                        </div>
+                        <br />
+                        <div className="border-2 border-white rounded-lg max-w-max p-5 m-2 ml-8">
+                            Join Room: <br /><br />
+
+                            <input
+                                type="text" placeholder="Enter Room ID" name="roomID" className="m-1 text-black px-4 py-2 rounded"
+                                value={roomid}
+                                onChange={(x) => setRoomID(x.target.value)}
+                            /> <br />
+                            <input type="button"
+                                value="Join Room"
+                                className="border-2 border-white max-w-max px-5 py-2 mt-4 text-white rounded hover:bg-purple-500"
+                                onClick={joinRoom}
+                            >
+
+                            </input>
+
+                        </div>
+
+                    </div>
+
+
+                    <RoomComponent />
 
                 </div>
-                <br />
-                <div className="border-2 border-white rounded-lg max-w-max p-5 m-2 ml-8">
-                    Join Room: <br /><br />
-
-                    <input
-                        type="text" placeholder="Enter Room ID" name="roomID" className="m-1 text-black px-4 py-2 rounded"
-                        value={roomid}
-                        onChange={(x) => setRoomID(x.target.value)}
-                    /> <br />
-                    <input type="button"
-                        value="Join Room"
-                        className="border-2 border-white max-w-max px-5 py-2 mt-4 text-white rounded hover:bg-purple-500"
-                        onClick={joinRoom}
-                    >
-
-                    </input>
-
-                </div>
-
             </center>
+
+
+
+
 
 
 
