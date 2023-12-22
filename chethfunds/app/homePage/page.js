@@ -1,7 +1,9 @@
 'use client';
 
+import Footer from '../../components/Footer';
 import AppBar from '../../components/AppBar'
 import Carousel from '../../components/Carousel'
+import RoomComponent from "../../components/RoomComponent";
 
 
 const HomePage = () => {
@@ -33,8 +35,12 @@ const HomePage = () => {
           </div>
         </div> <br></br><br></br>
         <center>
-        <h1 className='welcomeTag'><a href='./rooms'>My Rooms</a></h1>
-        </center><br></br>
+        <h1 className='welcomeTag'>My Rooms</h1>
+        <br></br>
+        
+        <RoomComponent/>
+        </center>
+        <Footer/>
         <style jsx>{`
 
         .welcomeTag {

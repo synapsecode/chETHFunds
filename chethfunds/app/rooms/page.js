@@ -1,18 +1,14 @@
 'use client';
+import Footer from "../../components/Footer";
 import AppBar from "../../components/AppBar";
+
 // import App from "next/app";
 
 export default function ManasHome() {
     return (
         <div>
         <AppBar pageName={"Rooms"}/>
-            <div>
-                <a href="/rooms/37gybybyvff"> Room 1</a> <br/>
-                <a href="/rooms/yrhgyhbf788"> Room 2</a> <br/>
-                <a href="/rooms/48h48hfuh"> Room 3</a> <br/>
-
-                <br/><br/>
-            </div>
+            
             <div className="border-2 border-white rounded-lg max-w-max p-2 m-2">
                 Create New Room: <br />
                 <form name="createRoom">
@@ -29,7 +25,9 @@ export default function ManasHome() {
                 <input type="submit" value="Submit" className="border-2 border-white max-w-max p-1"></input>
                 </form>
             </div>
+            <Footer/>
         </div>
+        
     )
 
 }
