@@ -72,61 +72,18 @@
 import { useState, useEffect } from 'react';
 import { collection, onSnapshot, setDoc, doc, deleteDoc } from 'firebase/firestore';
 import { firestore } from '@/firebase';
+import Auction from "../../components/Auction";
 
-const Auction = () => {
-  const [bidAmount, setBidAmount] = useState(2000);
-  const [timeRemaining, setTimeRemaining] = useState(120);
-
-  useEffect(() => {
-    const auctionRef = collection(firestore, 'auction');
-    const auctionDoc = doc(auctionRef, 'currentAuction');
-
-    const unsubscribe = onSnapshot(auctionDoc, (snapshot) => {
-      const data = snapshot.data();
-      if (data) {
-        setBidAmount(data.bidAmount);
-        setTimeRemaining(data.timeRemaining);
-      }
-    });
-
-    return () => {
-      unsubscribe();
-    };
-  }, []);
-
-  const handleIncrement = (amount) => {
-    setBidAmount((prevBidAmount) => prevBidAmount + amount);
-    setTimeRemaining(120);
-
-    // Update the bid amount and time remaining in Firestore
-    const auctionRef = doc(firestore, 'auction', 'currentAuction');
-    setDoc(auctionRef, { bidAmount: bidAmount + amount, timeRemaining: 120 });
-  };
-
-  const handleFinishAuction = async () => {
-    // I stored final bid here
-    const finalBid = bidAmount;
-
-    // This is for deleting the document
-    const auctionRef = doc(firestore, 'auction', 'currentAuction');
-    await deleteDoc(auctionRef);
-
-
-    console.log('Auction finished. Final Bid:', finalBid);
-  };
+const Auctions = () => {
+  
 
   return (
     <div>
-      <h1>Auction Page</h1>
-      <p>Current Bid: {bidAmount}</p>
-      <p>Time Remaining: {timeRemaining}s</p>
-      <button onClick={() => handleIncrement(1000)}>Bid +1000</button>
-      {/* Add more buttons or UI elements as needed */}
-      <button onClick={handleFinishAuction}>Finish Auction</button>
+     <Auction/>
     </div>
   );
 };
 
-export default Auction;
+export default Auctions;
 
 
