@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { collection, onSnapshot, setDoc, doc, deleteDoc } from 'firebase/firestore';
-import { firestore } from '../../firebase';
+import { firestore } from '../firebase';
 
 const Auction = () => {
     const [bidAmount, setBidAmount] = useState(2000);
@@ -19,23 +19,39 @@ const Auction = () => {
                 setTimeRemaining(data.timeRemaining);
             }
         });
+        const auctionFinishInterval = setInterval(() => {
+            if (timeRemaining === 0) {
+                handleFinishAuction();
+                clearInterval(auctionFinishInterval);
+                
+            }
+        }, 1000);
 
-        setInterval(() => {
-            setTimeRemaining(prevTime => (prevTime > 0 ? prevTime - 1 : 0));
-            // if(prevTime===0){
-            //     handleFinishAuction()
-            // }
-        }, 1000)
+        const timerInterval = setInterval(() => {
+            setTimeRemaining((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
+        }, 1000);
+    
 
-        setInterval(() => {
-            if (timeRemaining === 0)
-                handleFinishAuction
-        }, 10000);
+        // setInterval(() => {
+        //     setTimeRemaining(prevTime => (prevTime > 0 ? prevTime - 1 : 0));
+        //     // if(prevTime===0){
+        //     //     handleFinishAuction()
+        //     // }
+        // }, 1000)
 
+        // setInterval(() => {
+        //     if (timeRemaining === 0)
+        //         handleFinishAuction
+        // }, 10000);
+       
+    
         return () => {
+            
+            clearInterval(auctionFinishInterval);
+            clearInterval(timerInterval);
             unsubscribe();
         };
-    }, []);
+    }, [timeRemaining]);
 
 
     const handleAmount = (amount) => {
