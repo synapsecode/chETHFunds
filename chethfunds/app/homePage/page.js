@@ -16,25 +16,31 @@ const HomePage = () => {
         <Carousel images={carouselImages} />
         <br></br><br></br><br></br><br></br><br></br>
         <center>
-        <h1>Welcome To chETHFunds</h1><br></br>
+        <h1 className='welcomeTag'>Welcome To chETHFunds</h1><br></br>
         </center>
 
         <div className="action-buttons">
           <div className="action-container">
             <h2>Create a Room</h2><br></br>
             <p>Start a new chit fund room and invite participants</p><br></br>
-            <button>Create Room</button>
+            <button><a href='./rooms'>Create Room</a></button>
           </div>
 
           <div className="action-container">
             <h2>Join a Room</h2><br></br>
             <p>Join an existing chit fund room by entering the room code</p><br></br>
-            <button>Join Room</button>
+            <button><a href='./rooms'>Join Room</a></button>
           </div>
-        </div>
+        </div> <br></br><br></br>
+        <center>
+        <h1 className='welcomeTag'><a href='./rooms'>My Rooms</a></h1>
+        </center><br></br>
         <style jsx>{`
 
-        
+        .welcomeTag {
+            font-weight: 700;
+            font-size: 30;
+        }
         
 
         .action-buttons {
