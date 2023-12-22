@@ -5,6 +5,8 @@ const DynamicPage = ({ params: { id } }) => {
         <div>
             <h1>Chitfund Room Page</h1>
             <p>ID: {id}</p>
+            <br />
+            <p>Starting Date:</p>
         </div>
     );
 };
