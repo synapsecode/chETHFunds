@@ -4,7 +4,7 @@
 import Link from 'next/link';
 import { Register } from './register/page'
 import React, { useState } from 'react';
-import auth from '../firebase';
+import { auth } from '@/firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 
 
