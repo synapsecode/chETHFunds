@@ -6,10 +6,7 @@ import { useState, useEffect } from 'react'
 const chitFundABI = require('../../blockchain/contract/ChitFund.json');
 import { decodeEventLog, parseAbi, parseEther } from 'viem'
 
-
-
 let chitFundContract = null;
-
 
 const Playground = () => {
 
@@ -19,32 +16,35 @@ const Playground = () => {
     const [chitAmount, setChitAmount] = useState(0);
     const [textBoxValue, setTextBoxValue] = useState('');
 
-
     const initialize = async () => {
         //Regiuster Viemutils
         ViemUtils.registerWalletClient(window);
         const address = await ViemUtils.getConnectedAddress();
         console.log(`Connected Address: ${address}`);
-        chitFundContract = new ViemContract({
+        setUserAddr(address);
+        const contract = new ViemContract({
             name: 'ChitFund',
             abi: chitFundABI.abi,
-            address: '0x803B7Fd212AE52E2948D2dd5dA292dC72F14AecE',
+            address: '0xecf272119da2475c7ea6170b866a7aba31a083d9',
         });
-        setUserAddr(address);
+        chitFundContract = contract;
         getBalance();
         getChitAmount();
     }
 
     const deploy = async () => {
         setLoading(true);
-        chitFundContract = await ViemUtils.deployContract({
+        const contract = await ViemUtils.deployContract({
             name: 'ChitFund',
             abi: chitFundABI.abi,
             bytecode: bytecode,
             args: [2, parseEther('0.005'), 2],
         });
+        console.log(`Deployed Contract => ${contract}`)
+        chitFundContract = contract;
+        getBalance();
+        getChitAmount();
         setLoading(false);
-        console.log('Deployment Complete');
     }
 
     const getBalance = async () => {
@@ -105,7 +105,8 @@ const Playground = () => {
     return (
         <div className='text-sky-400 p-5'>
             <p className='text-4xl'>ChETHFunds</p>
-            <p className='text-2xl text-sky-blue'>{userAddr}</p>
+            <p className='text-2xl text-sky-blue'>User: {userAddr}</p>
+            <p className='text-sm text-amber-500'>Contract: {chitFundContract?.contractAddress} </p>
 
             <br /><br />
 
