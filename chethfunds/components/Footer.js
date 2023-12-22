@@ -2,7 +2,7 @@ const Footer = () => {
     return (
       <nav>
         <div className="container">        
-            <a className="header">All copyrights reserved &copy; by Blank Point</a>
+            <a className="header">All copyrights reserved &copy; by Blank Point &lt; .&gt;</a>
         </div>
   
         <style jsx>{`
