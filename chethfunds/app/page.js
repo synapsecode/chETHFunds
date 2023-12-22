@@ -4,7 +4,8 @@
 import Link from 'next/link';
 import {Register} from './register/page'
 import React, { useState } from 'react';
-import firebase from '../firebase';
+import { auth } from '../firebase';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
 
 
@@ -13,22 +14,24 @@ import firebase from '../firebase';
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
   
-    const handleSignIn = async () => {
+    const handleLogin  = async (e) => {
+      e.preventDefault();
       try {
-        await firebase.auth().signInWithEmailAndPassword(email, password);
+        await signInWithEmailAndPassword(auth, email, password);
         console.log('User signed in successfully!');
+        window.location.href = '/homePage';
       } catch (error) {
         console.error('Error signing in:', error.message);
       }
     };
   
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24 bg-#353935 text-white">
+    <main className="flex min-h-screen flex-col items-center justify-between p-24 bg-#353935 text-black">
       <section className="flex flex-col items-center bg-black p-8 rounded-md shadow-md">
         <h1 className="text-8xl mb-8 text-indigo-600">ChETH Funds</h1>
 
         {/* Login Form */}
-        <form className="flex flex-col items-center space-y-4">
+        <form className="flex flex-col items-center space-y-4" onSubmit={handleLogin}>
           <h2 className="text-3xl mb-4 text-gray-800">Login</h2>
           <input
             type="email"
@@ -46,8 +49,7 @@ import firebase from '../firebase';
           />
           <button
             type="submit"
-            className="bg-blue-500 text-white p-2 rounded-md"
-            onClick={handleSignIn}
+            className="bg-blue-500 text-white p-2 rounded-md"           
           >
             Login
           </button>
