@@ -4,8 +4,8 @@ import { collection, onSnapshot, setDoc, doc, deleteDoc } from 'firebase/firesto
 import { firestore } from '@/firebase';
 
 const Auction = ({ user, callback }) => {
-    const [bidAmount, setBidAmount] = useState(2000);
-    const [myBid, setMyBid] = useState(bidAmount);
+    const [bidAmount, setBidAmount] = useState(0.0005);
+    const [myBid, setMyBid] = useState(0);
     const [seconds, setSeconds] = useState(20);
     const [auctionStarted, setAuctionStarted] = useState(false);
     const [winner, setWinner] = useState(null);
@@ -54,7 +54,6 @@ const Auction = ({ user, callback }) => {
         if (seconds === 0) {
             clearInterval(timerId);
             handleFinishAuction();
-            alert('Auction Complete!');
         }
         return () => {
             clearInterval(timerId); // Cleanup on component unmount
@@ -77,7 +76,7 @@ const Auction = ({ user, callback }) => {
     const handleFinishAuction = async () => {
         // I stored final bid here
         const finalBid = bidAmount;
-        setBidAmount(2000);
+        setBidAmount(0.0005);
         // This is for deleting the document
         const auctionRef = doc(firestore, 'auction', 'currentAuction');
         await deleteDoc(auctionRef);
@@ -100,14 +99,15 @@ const Auction = ({ user, callback }) => {
     return (
         <div className='border w-1/4 p-5 rounded-2xl'>
             <div className="flex flex-col justify-center items-center text-teal-500">
-                <p>Current Bid: {bidAmount}</p> <br />
+                <p>Current Bid: {bidAmount}ETH</p> <br />
                 <p>Time Remaining: {seconds}s</p> <br />
-                <p>Bid: {myBid}</p><br />
+                <p>My Bid: {myBid}ETH</p><br />
                 <div>
                     <button className="border-2 border-teal-200 p-3 rounded-xl m-1 inline-block font-bold" onClick={() => handleAmount(myBid)}>Place Bid</button>
                     {/* <button className="border-2 border-teal-200 p-3 rounded-xl m-1 inline-block font-bold" onClick={() => { setMyBid(2000); resetTimer(); }}>RESET</button> */}
                 </div><br />
-                <button onClick={() => handleIncrement(1000)}>+1000</button> <br />
+                <button onClick={() => handleIncrement(0.0005)}>Increase</button>
+                <button onClick={() => handleIncrement(-0.0005)}>Decrease</button> <br />
             </div>
         </div>
     );
