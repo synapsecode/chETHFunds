@@ -6,7 +6,6 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 
 
 const Register = () => {
-  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -16,6 +15,7 @@ const Register = () => {
       // You can add user registration logic here
       await createUserWithEmailAndPassword(auth, email, password);
       console.log('User signed up successfully!');
+      window.location.href = '/homePage';
       // You can redirect the user to the home page or another page after successful registration
     } catch (error) {
       console.error('Error signing up:', error.message);
