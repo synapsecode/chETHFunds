@@ -105,7 +105,7 @@ export default function RoomHome() {
                     </div>
 
 
-                    <RoomComponent />
+                    {/* <RoomComponent /> */}
 
                 </div>
             </center>
