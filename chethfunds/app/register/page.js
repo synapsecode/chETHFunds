@@ -1,8 +1,9 @@
 // pages/register.js
 "use client";
 import React, { useState } from 'react';
-import auth from '../../firebase';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '@/firebase';
+import { createUserWithEmailAndPassword } from "firebase/auth";
+
 
 const Register = () => {
   const [username, setUsername] = useState('');

@@ -1,15 +1,15 @@
 const Footer = () => {
-    return (
-      <nav>
-        <div className="container">        
-            <a className="header">All copyrights reserved &copy; by Blank Point &lt; .&gt;</a>
-        </div>
-  
-        <style jsx>{`
+  return (
+    <nav>
+      <div className="container">
+        <a className="header">All copyrights reserved &copy; by Blank Point &lt; .&gt;</a>
+      </div>
+
+      <style jsx>{`
           nav {
             background-color: #333;
             color: #fff;
-            padding: 10px 0;
+            padding: 10px 20px;
           }
           .container {
             display: flex;
@@ -23,8 +23,8 @@ const Footer = () => {
             text-decoration: none;
           }
         `}</style>
-      </nav>
-    );
-  };
-  
-  export default Footer;
+    </nav>
+  );
+};
+
+export default Footer;
