@@ -3,11 +3,12 @@ import { useState, useEffect } from 'react';
 import { collection, onSnapshot, setDoc, doc, deleteDoc } from 'firebase/firestore';
 import { firestore } from '@/firebase';
 
-const Auction = () => {
+const Auction = ({ user, callback }) => {
     const [bidAmount, setBidAmount] = useState(2000);
     const [myBid, setMyBid] = useState(bidAmount);
     const [seconds, setSeconds] = useState(20);
     const [auctionStarted, setAuctionStarted] = useState(false);
+    const [winner, setWinner] = useState(null);
 
     let timerId;
 
@@ -37,8 +38,10 @@ const Auction = () => {
         const unsubscribe = onSnapshot(auctionDoc, (snapshot) => {
             const data = snapshot.data();
             if (data) {
+                console.log(data);
                 setBidAmount(data.bidAmount);
                 setSeconds(data.timeRemaining);
+                setWinner(data.user);
             }
         });
 
@@ -62,10 +65,9 @@ const Auction = () => {
     const handleAmount = (amount) => {
         setBidAmount((prevBidAmount) => prevBidAmount + amount);
         resetTimer();
-
         // Update the bid amount and time remaining in Firestore
         const auctionRef = doc(firestore, 'auction', 'currentAuction');
-        setDoc(auctionRef, { bidAmount: bidAmount + amount, timeRemaining: 20 });
+        setDoc(auctionRef, { bidAmount: bidAmount + amount, timeRemaining: 20, user: user });
     };
 
     const handleIncrement = (a) => {
@@ -81,6 +83,9 @@ const Auction = () => {
         await deleteDoc(auctionRef);
         console.log('Auction finished. Final Bid:', finalBid);
         setAuctionStarted(false);
+
+        console.log(`Winner: ${winner}`);
+        callback(finalBid, winner)
     };
 
     const handleStartAuction = () => {
@@ -89,7 +94,7 @@ const Auction = () => {
     }
 
 
-    if (!auctionStarted) {
+    if (auctionStarted === false) {
         return <center><button onClick={handleStartAuction} className='border-1 rounded-2xl mr-4 ml-2 p-4'>Start Auction</button></center>
     }
     return (

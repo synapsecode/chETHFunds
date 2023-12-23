@@ -14,6 +14,10 @@ const DynamicPage = ({ params: { id } }) => {
     const [chitAmount, setChitAmount] = useState(0);
     const [loading, setLoading] = useState(false);
 
+    const [finalBid, setFinalBid] = useState(null);
+    const [eligibleToWithdraw, setEligibleToWithdraw] = useState(false);
+    const [deposited, setDeposited] = useState(false);
+
     const initialize = async () => {
         //Register Viemutils
         ViemUtils.registerWalletClient(window);
@@ -36,7 +40,16 @@ const DynamicPage = ({ params: { id } }) => {
         const res = await chitFundContract.read({
             functionName: 'getBalance'
         });
-        setFunds(Number(res) / 10 ** 18);
+        const funds = Number(res) / 10 ** 18;
+        console.log(funds);
+        if (funds === 0) {
+            window.localStorage.setItem(`deposited_${id}`, false);
+            setDeposited(false);
+        } else {
+            const v = JSON.parse((window.localStorage.getItem(`deposited_${id}`) ?? false).toString());
+            setDeposited(v);
+        }
+        setFunds(funds);
     }
 
     const getChitAmount = async () => {
@@ -67,7 +80,29 @@ const DynamicPage = ({ params: { id } }) => {
         });
         setLoading(false);
         console.log(res);
+        window.localStorage.setItem(`deposited_${id}`, true);
         window.location.href = `/rooms/${id}`;
+    }
+
+    const handleAuctionCallback = (finalbid, winner) => {
+        setFinalBid(finalbid);
+        console.log(`Winner: ${winner}`);
+        if (winner === userAddr) {
+            console.log('Eligible to Withdraw');
+            setEligibleToWithdraw(true);
+        }
+    }
+
+    const withdraw = async () => {
+        if (chitFundContract === null) return console.error('NULLCONTRACT');
+        setLoading(true);
+        const res = await chitFundContract.write({
+            functionName: 'withdraw',
+            args: [userAddr, parseEther(finalBid.toString())]
+        });
+        console.log(res);
+        setLoading(false);
+        window.location.href = '/playground';
     }
 
 
@@ -102,10 +137,34 @@ const DynamicPage = ({ params: { id } }) => {
             </div>
             <br />
 
-            <div className="flex justify-center">
-                <button onClick={deposit} className="ml-5 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"> Deposit Funds </button><br />
-                <Auction />
+            {
+                deposited
+                    ? <p className="text-sm text-gray-500">Already Deposited to Chitfund</p>
+                    : <button onClick={withdraw} className="ml-5 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"> Deposit Funds </button>
+            }
+            <br />
+
+            <div className="w-3/4 mt-3">
+                {
+                    finalBid === null
+                        ? <Auction callback={handleAuctionCallback} user={userAddr} />
+                        : <center>
+                            <div className="p-4 bg-gray-900 border white rounded-2xl ml-5">
+                                <p className="text-3xl px-3"> Winning Bid: {finalBid}</p>
+                                {
+                                    eligibleToWithdraw
+                                        ? <button onClick={deposit} className="mt-4 ml-5 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"> Withdraw Funds </button>
+                                        : <p className="text-sm text-gray-500">Not eligible to withdraw as you lost auction</p>
+                                }
+
+                            </div>
+
+                        </center>
+                }
+
+
             </div>
+
 
 
         </div>
