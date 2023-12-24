@@ -62,3 +62,9 @@ We welcome contributions from the community. To contribute, please follow these 
 3. Make changes and commit them.
 4. Push the changes to your fork.
 5. Submit a pull request.
+
+## License
+
+This project is licensed under the [Blank Point < .>](LICENSE). Feel free to use, modify, and distribute it as per the license terms.
+
+Happy coding! < .>
