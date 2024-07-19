@@ -105,6 +105,20 @@ const DynamicPage = ({ params: { id } }) => {
         window.location.href = `/rooms/${id}`;
     }
 
+    const calculateValues = () => {
+        const n = funds / Number(chitAmount.toString());
+        const c = funds * 0.02;
+        const wb = finalBid;
+        const p2b = funds - c - wb;
+        const p2a = wb / n;
+
+        return {
+            p2b,
+            p2a,
+            commission: c,
+        };
+    }
+
 
     if (loading) {
         return <center className='mt-20'>
@@ -114,6 +128,8 @@ const DynamicPage = ({ params: { id } }) => {
             </svg>
         </center>
     }
+
+
 
     return (
         <div className='text-sky-400 p-5'>
@@ -137,11 +153,7 @@ const DynamicPage = ({ params: { id } }) => {
             </div>
             <br />
 
-            {
-                deposited
-                    ? <p className="text-sm text-gray-500">Already Deposited to Chitfund</p>
-                    : <button onClick={deposit} className="ml-5 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"> Deposit Funds </button>
-            }
+            <button onClick={deposit} className="ml-5 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"> Deposit Funds </button>
             <br />
 
             <div className="w-3/4 mt-3">
@@ -150,11 +162,14 @@ const DynamicPage = ({ params: { id } }) => {
                         ? <Auction callback={handleAuctionCallback} user={userAddr} />
                         : <center>
                             <div className="p-4 bg-gray-900 border white rounded-2xl ml-5">
-                                <p className="text-3xl px-3"> Winning Bid: {finalBid}ETH</p>
+                                <p className="text-xl px-3"> Winning Bid: <span className="text-amber-300">{finalBid}ETH</span></p>
+                                <p className="text-2xl px-3 mt-2"> You get:  <span className="text-amber-300">{calculateValues().p2b.toFixed(3)} ETH</span> (not inclusive of gas fees)</p>
+                                <p className="text-xl px-3 mt-2"> Everyone gets:  <span className="text-amber-300">{calculateValues().p2a.toFixed(3)} ETH each</span></p>
+                                <p className="text-lg px-3 mt-2"> Platform Commission:  <span className="text-amber-300">{calculateValues().commission.toFixed(3)} ETH</span></p>
                                 {
                                     eligibleToWithdraw
                                         ? <button onClick={withdraw} className="mt-4 ml-5 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"> Withdraw Funds </button>
-                                        : <p className="text-sm text-gray-500">Not eligible to withdraw as you lost auction</p>
+                                        : <p className="text-sm text-gray-500 mt-5">Not eligible to withdraw as you lost auction</p>
                                 }
 
                             </div>

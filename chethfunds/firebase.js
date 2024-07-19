@@ -11,13 +11,12 @@ import { getFirestore } from 'firebase/firestore';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyArqx8AreRnecrFsq_UjKOO_mnFxJ773Vs",
-  authDomain: "chethfunds.firebaseapp.com",
-  projectId: "chethfunds",
-  storageBucket: "chethfunds.appspot.com",
-  messagingSenderId: "851022073074",
-  appId: "1:851022073074:web:ed76d6e65e69c1f4bf546b",
-
+  apiKey: "AIzaSyDQPUTjBAFA_5TVGJgbfli4kCwcbqFeM0k",
+  authDomain: "chethfunds-9cb76.firebaseapp.com",
+  projectId: "chethfunds-9cb76",
+  storageBucket: "chethfunds-9cb76.appspot.com",
+  messagingSenderId: "725733902625",
+  appId: "1:725733902625:web:aa3d5b7997fd2e8ef65660"
 };
 
 // Initialize Firebase

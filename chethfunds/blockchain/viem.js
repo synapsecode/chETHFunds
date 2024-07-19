@@ -1,7 +1,7 @@
 "use client";
 
 import { createWalletClient, custom, createPublicClient, http } from 'viem'
-import { goerli } from 'viem/chains'
+import { sepolia } from 'viem/chains'
 import { parseEther, getAddress, decodeEventLog, parseAbi } from 'viem';
 
 let eventUnsubscriberList = [];
@@ -11,7 +11,7 @@ class ViemUtils {
     static walletClient = null;
     static publicClient = null;
     static initialized = false;
-    static chain = goerli;
+    static chain = sepolia;
 
 
 
@@ -81,7 +81,7 @@ class ViemUtils {
             account: account,
             bytecode: bytecode,
             args: args,
-            gas: 5000000,
+            gas: 500000,
         });
         const txdata = await this.publicClient.waitForTransactionReceipt({ hash: hash });
         console.log(txdata);

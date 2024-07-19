@@ -25,7 +25,7 @@ const Playground = () => {
         const contract = new ViemContract({
             name: 'ChitFund',
             abi: chitFundABI.abi,
-            address: '0xecf272119da2475c7ea6170b866a7aba31a083d9',
+            address: '0xD10EbFEFDFEB8975366EF577c644e1B95850563e',
         });
         chitFundContract = contract;
         getBalance();
@@ -38,7 +38,8 @@ const Playground = () => {
             name: 'ChitFund',
             abi: chitFundABI.abi,
             bytecode: bytecode,
-            args: [2, parseEther('0.005'), 2],
+            args: [2, parseEther('0.003'), 2],
+
         });
         console.log(`Deployed Contract => ${contract}`)
         chitFundContract = contract;
